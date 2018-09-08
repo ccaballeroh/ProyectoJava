@@ -1,7 +1,7 @@
 package Grafos;
 
 public class nodo{
-  String name;
+  private String name;
   public nodo(){
   }
 
