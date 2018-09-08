@@ -9,10 +9,6 @@ public class Prueba {
     grafo uno = new grafo(100);
     uno.modeloER(50);
     uno.imprimirStdOut();
-
-    grafo dos = new grafo(100);
-    dos.modeloER(50);
-    dos.imprimirStdOut();
   }
 
 }
