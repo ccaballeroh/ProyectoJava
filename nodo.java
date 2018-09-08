@@ -1,19 +1,36 @@
 package Grafos;
 
-public class nodo{
+public class Nodo{
   private String name;
-  public nodo(){
+  private Integer numAristas;
+
+  public Nodo(){
   }
 
-  public nodo(String name){
+  public Nodo(String name){
     this.name = name;
+    this.numAristas = 0;
   }
 
-  public nodo(int name){
+  public Nodo(int name){
     this.name = "n" + String.valueOf(name);
+    this.numAristas = 0;
+  }
+
+  public void setNumEdges(int numero){
+    this.numAristas = numero;
+  }
+
+  public void addEdge(){
+    this.numAristas += 1;
   }
 
   public String getName(){
     return name;
+  }
+
+  public Integer getNumEdges(){
+    return numAristas;
+
   }
 }
