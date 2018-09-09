@@ -13,3 +13,5 @@ Ambas clases forman un **paquete** llamado `Grafos` que puede importarse a otro 
 ```Java
 > import Grafos.grafo;
 ```
+
+Las imágenes PNG fueron generadas con [gephi](https://gephi.org/).
