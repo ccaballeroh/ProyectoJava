@@ -76,22 +76,21 @@ public class grafo
 
   public void modeloGeoSimple(double r){
     for(int i = 0; i < this.getNumNodes(); i++){
-      for(int j = 0; j <this.getNumNodes(); j++){
+      for(int j = 0; j < this.getNumNodes(); j++){
         double distancia = distanciaNodos(this.nodes[i], this.nodes[j]);
         if ((i != j) && (distancia <= r)){
-          if (!existeConexion(this.nodes[i], this.nodes[j])){
+           if (!existeConexion(this.nodes[i], this.nodes[j])){
             conectarNodos(this.nodes[i], this.nodes[j]);
-          }
+           }
         }
       }
     }
-
   }
 
   public void modeloBA(int d){
     Random volado = new Random();
     for(int i = 0; i < this.getNumNodes(); i++){
-      for(int j = 0; j <this.getNumNodes(); j++){
+      for(int j = 0; j < this.getNumNodes(); j++){
         if ((i != j) && (i < d)){
           if (!existeConexion(this.nodes[i], this.nodes[j])){
             conectarNodos(this.nodes[i], this.nodes[j]);
@@ -111,7 +110,7 @@ public class grafo
   }
 
   private int gradoNodo(Nodo n1){
-    return n1.getNumEdges();
+    return this.graph.get(n1).size();
   }
 
   private void conectarNodos(Nodo n1, Nodo n2){
@@ -120,12 +119,7 @@ public class grafo
 
      vertices1.add(n2);
      vertices2.add(n1);  //en grafos dirigidos hay que quitar esta
-     n1.addEdge();
-     n2.addEdge();
      this.numeroAristas +=1;
-
-     // System.out.println("Se hizo una conexion entre " + n1.getName() + " y " +
-     //  n2.getName());
   }
 
   private Boolean existeConexion(Nodo n1, Nodo n2){
