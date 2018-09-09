@@ -3,7 +3,10 @@ import Grafos.Nodo;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-
+import java.util.Formatter;
+import java.util.NoSuchElementException;
+import java.util.FormatterClosedException;
+import java.io.FileNotFoundException;
 
 public class grafo
 {
@@ -11,6 +14,7 @@ public class grafo
   private HashMap<Nodo, HashSet<Nodo>> graph;
   private int numeroNodos;
   private int numeroAristas;
+  private static Formatter output;
 
   public grafo(int numNodos)
   {
@@ -58,7 +62,7 @@ public class grafo
      // HashSet<Nodo> vertices2 = this.graph.get(n2);
 
      vertices1.add(n2);
-     // vertices2.add(n1);
+     // vertices2.add(n1);  // Se usará para grafos dirigidos
 
      // System.out.println("Se hizo una conexion entre " + n1.getName() + " y " +
      //  n2.getName());
@@ -95,5 +99,37 @@ public class grafo
       }
      }
     System.out.println("}");
+  }
+
+  public void escribirArchivo(String nombre){
+    try{
+      output = new Formatter(nombre);
+    }
+    catch (SecurityException securityException){
+      System.err.println("No hay permiso de escritura.");
+      System.exit(1);
+    }
+    catch (FileNotFoundException fileNotFoundException){
+      System.err.println("Error al abrir el archivo.");
+      System.exit(1);
+    }
+    try{
+      output.format("%s","graph {\n");
+      for (int i = 0; i < this.getNumNodes(); i++){
+        output.format("%s", this.nodes[i].getName() + ";\n");
+      }
+      for (int i = 0; i < this.getNumNodes(); i++){
+        HashSet<Nodo> aristas = graph.get(this.nodes[i]);
+        for (Nodo n : aristas){
+        output.format("%s",this.nodes[i].getName() + " -- " + n.getName() + ";\n");
+        }
+       }
+      output.format("}\n");
+    }
+    catch (FormatterClosedException formatterClosedException){
+      System.err.println("Error al escribir al archivo");
+    }
+    if (output != null)
+    output.close();
   }
 }

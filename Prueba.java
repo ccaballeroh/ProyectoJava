@@ -6,9 +6,16 @@ import Grafos.grafo;
 
 public class Prueba {
   public static void main(String s[]){
-    grafo uno = new grafo(1500);
-    uno.modeloER(1289);
-    uno.imprimirStdOut();
-  }
+    grafo uno = new grafo(358);
+    uno.modeloER(237);
+    uno.escribirArchivo("Salidas\\Salida1.gv");
 
+    grafo dos = new grafo(589);
+    dos.modeloER(500);
+    uno.escribirArchivo("Salidas\\Salida2.gv");
+
+    grafo tres = new grafo(1500);
+    tres.modeloER(1289);
+    tres.escribirArchivo("Salidas\\Salida3.gv");
+  }
 }
