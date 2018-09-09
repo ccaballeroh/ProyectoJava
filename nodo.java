@@ -23,16 +23,15 @@ public class Nodo{
     this.name = "n" + String.valueOf(name);
     this.x = x;
     this.y = y;
-
   }
 
   public void setNumEdges(int numero){
     this.numAristas = numero;
   }
 
-  public void addEdge(){
-    this.numAristas += 1;
-  }
+  // public void addEdge(){
+  //   this.numAristas += 1;
+  // }
 
   public String getName(){
     return name;
