@@ -28,6 +28,21 @@ public class grafo
     }
   }
 
+  public grafo(int numNodos, String modelo){
+      this.graph = new HashMap<Nodo, HashSet<Nodo>>();
+      this.numeroNodos = numNodos;
+      this.nodes = new Nodo[numNodos];
+      Random coorX = new Random();
+      Random coorY = new Random();
+      if (modelo == "geo-uniforme"){
+        for (int i = 0; i < numNodos; i++){
+          Nodo n = new Nodo(i, coorX.nextDouble(), coorY.nextDouble());
+          this.nodes[i] = n;
+          this.graph.put(n, new HashSet<Nodo>());
+        }
+      }
+    }
+
   public void modeloER(int numAristas){
     Random randomNum1 = new Random();
     Random randomNum2 = new Random();
@@ -46,10 +61,30 @@ public class grafo
   }
 
   public void modeloGilbert(double probabilidad){
+    Random randomNum = new Random();
 
+    for(int i = 0; i < this.getNumNodes(); i++){
+      for(int j = 0; j <this.getNumNodes(); j++){
+        if ((i != j) && (randomNum.nextDouble() <= probabilidad)){
+          if (!existeConexion(this.nodes[i], this.nodes[j])){
+            conectarNodos(this.nodes[i], this.nodes[j]);
+          }
+        }
+      }
+    }
   }
 
-  public void modeloGeoSimple(double distancia){
+  public void modeloGeoSimple(double r){
+    for(int i = 0; i < this.getNumNodes(); i++){
+      for(int j = 0; j <this.getNumNodes(); j++){
+        double distancia = distanciaNodos(this.nodes[i], this.nodes[j]);
+        if ((i != j) && (distancia <= r)){
+          if (!existeConexion(this.nodes[i], this.nodes[j])){
+            conectarNodos(this.nodes[i], this.nodes[j]);
+          }
+        }
+      }
+    }
 
   }
 
@@ -59,10 +94,10 @@ public class grafo
 
   private void conectarNodos(Nodo n1, Nodo n2){
      HashSet<Nodo> vertices1 = this.graph.get(n1);
-     // HashSet<Nodo> vertices2 = this.graph.get(n2);
+     HashSet<Nodo> vertices2 = this.graph.get(n2);
 
      vertices1.add(n2);
-     // vertices2.add(n1);  // Se usará para grafos dirigidos
+     vertices2.add(n1);  //en grafos dirigidos hay que quitar esta
 
      // System.out.println("Se hizo una conexion entre " + n1.getName() + " y " +
      //  n2.getName());
@@ -77,6 +112,11 @@ public class grafo
      else{
        return false;
      }
+  }
+
+  private double distanciaNodos(Nodo n1, Nodo n2){
+    return Math.sqrt(Math.pow((n1.getX() - n2.getX()), 2)
+    + Math.pow((n1.getY() - n2.getY()), 2));
   }
 
   public int getNumNodes(){
