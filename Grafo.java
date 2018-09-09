@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.FormatterClosedException;
 import java.io.FileNotFoundException;
 
-public class Graph
+public class Grafo
 {
   private Vertice[] nodes;
   private HashMap<Vertice, HashSet<Vertice>> graph;
@@ -16,7 +16,7 @@ public class Graph
   private int numeroAristas;
   private static Formatter output;
 
-  public Graph(int numVertices)
+  public Grafo(int numVertices)
   {
     this.graph = new HashMap<Vertice, HashSet<Vertice>>();
     this.numeroVertices = numVertices;
@@ -28,7 +28,7 @@ public class Graph
     }
   }
 
-  public Graph(int numVertices, String modelo){
+  public Grafo(int numVertices, String modelo){
       this.graph = new HashMap<Vertice, HashSet<Vertice>>();
       this.numeroVertices = numVertices;
       this.nodes = new Vertice[numVertices];
