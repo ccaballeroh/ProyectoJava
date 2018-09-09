@@ -11,7 +11,7 @@ Es necesario compilar primero la clase `Vertice`. Después, la clase `Grafo`.
 Ambas clases forman un **paquete** llamado `Grafos` que puede importarse a otro archivo de Java como en el archivo `Prueba.java`
 
 ```Java
-> import Grafos.grafo;
+import Grafos.grafo;
 ```
 
 Las imágenes PNG fueron generadas con [gephi](https://gephi.org/).
