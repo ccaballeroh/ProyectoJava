@@ -6,8 +6,8 @@ import Grafos.grafo;
 
 public class Prueba {
   public static void main(String s[]){
-    grafo uno = new grafo(100);
-    uno.modeloER(50);
+    grafo uno = new grafo(1500);
+    uno.modeloER(1289);
     uno.imprimirStdOut();
   }
 
