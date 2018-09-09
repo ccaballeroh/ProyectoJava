@@ -20,7 +20,7 @@ public class Prueba {
 
     grafo cuatro = new grafo(358);
     cuatro.modeloGilbert(1);
-    cuatro.escribirArchivo("Salidas\\Salida.gv");
+    cuatro.escribirArchivo("Salidas\\Salida4.gv");
 
     grafo cinco = new grafo(589);
     cinco.modeloGilbert(0.3);
