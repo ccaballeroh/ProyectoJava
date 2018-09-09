@@ -1,25 +1,25 @@
 package Grafos;
 
-public class Nodo{
+public class Vertice{
   private String name;
   private Integer numAristas;
   private double x;
   private double y;
 
-  public Nodo(){
+  public Vertice(){
   }
 
-  public Nodo(String name){
+  public Vertice(String name){
     this.name = name;
     this.numAristas = 0;
   }
 
-  public Nodo(int name){
+  public Vertice(int name){
     this.name = "n" + String.valueOf(name);
     this.numAristas = 0;
   }
 
-  public Nodo(int name, double x, double y){
+  public Vertice(int name, double x, double y){
     this.name = "n" + String.valueOf(name);
     this.x = x;
     this.y = y;

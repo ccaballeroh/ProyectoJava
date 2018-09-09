@@ -1,5 +1,5 @@
 package Grafos;
-import Grafos.Nodo;
+import Grafos.Vertice;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -8,37 +8,37 @@ import java.util.NoSuchElementException;
 import java.util.FormatterClosedException;
 import java.io.FileNotFoundException;
 
-public class Grafo
+public class Graph
 {
-  private Nodo[] nodes;
-  private HashMap<Nodo, HashSet<Nodo>> graph;
-  private int numeroNodos;
+  private Vertice[] nodes;
+  private HashMap<Vertice, HashSet<Vertice>> graph;
+  private int numeroVertices;
   private int numeroAristas;
   private static Formatter output;
 
-  public Grafo(int numNodos)
+  public Graph(int numVertices)
   {
-    this.graph = new HashMap<Nodo, HashSet<Nodo>>();
-    this.numeroNodos = numNodos;
-    this.nodes = new Nodo[numNodos];
-    for (int i = 0; i < numNodos; i++){
-      Nodo n = new Nodo(i);
+    this.graph = new HashMap<Vertice, HashSet<Vertice>>();
+    this.numeroVertices = numVertices;
+    this.nodes = new Vertice[numVertices];
+    for (int i = 0; i < numVertices; i++){
+      Vertice n = new Vertice(i);
       this.nodes[i] = n;
-      this.graph.put(n, new HashSet<Nodo>());
+      this.graph.put(n, new HashSet<Vertice>());
     }
   }
 
-  public Grafo(int numNodos, String modelo){
-      this.graph = new HashMap<Nodo, HashSet<Nodo>>();
-      this.numeroNodos = numNodos;
-      this.nodes = new Nodo[numNodos];
+  public Graph(int numVertices, String modelo){
+      this.graph = new HashMap<Vertice, HashSet<Vertice>>();
+      this.numeroVertices = numVertices;
+      this.nodes = new Vertice[numVertices];
       Random coorX = new Random();
       Random coorY = new Random();
       if (modelo == "geo-uniforme"){
-        for (int i = 0; i < numNodos; i++){
-          Nodo n = new Nodo(i, coorX.nextDouble(), coorY.nextDouble());
+        for (int i = 0; i < numVertices; i++){
+          Vertice n = new Vertice(i, coorX.nextDouble(), coorY.nextDouble());
           this.nodes[i] = n;
-          this.graph.put(n, new HashSet<Nodo>());
+          this.graph.put(n, new HashSet<Vertice>());
         }
       }
     }
@@ -53,7 +53,7 @@ public class Grafo
       int num2 = randomNum2.nextInt(this.getNumNodes());
       if (num1 != num2){
         if (!existeConexion(this.nodes[num1], this.nodes[num2])){
-          conectarNodos(this.nodes[num1], this.nodes[num2]);
+          conectarVertices(this.nodes[num1], this.nodes[num2]);
           conexiones++;
         }
       }
@@ -67,7 +67,7 @@ public class Grafo
       for(int j = 0; j <this.getNumNodes(); j++){
         if ((i != j) && (randomNum.nextDouble() <= probabilidad)){
           if (!existeConexion(this.nodes[i], this.nodes[j])){
-            conectarNodos(this.nodes[i], this.nodes[j]);
+            conectarVertices(this.nodes[i], this.nodes[j]);
           }
         }
       }
@@ -77,10 +77,10 @@ public class Grafo
   public void modeloGeoSimple(double r){
     for(int i = 0; i < this.getNumNodes(); i++){
       for(int j = 0; j < this.getNumNodes(); j++){
-        double distancia = distanciaNodos(this.nodes[i], this.nodes[j]);
+        double distancia = distanciaVertices(this.nodes[i], this.nodes[j]);
         if ((i != j) && (distancia <= r)){
            if (!existeConexion(this.nodes[i], this.nodes[j])){
-            conectarNodos(this.nodes[i], this.nodes[j]);
+            conectarVertices(this.nodes[i], this.nodes[j]);
            }
         }
       }
@@ -93,15 +93,15 @@ public class Grafo
       for(int j = 0; j < this.getNumNodes(); j++){
         if ((i != j) && (i < d)){
           if (!existeConexion(this.nodes[i], this.nodes[j])){
-            conectarNodos(this.nodes[i], this.nodes[j]);
+            conectarVertices(this.nodes[i], this.nodes[j]);
           }
         }
         else if ((i != j) && (i >= d)){
           double probabilidad =
-          (double)gradoNodo(this.nodes[j])/(double)this.getNumEdges();
+          (double)gradoVertice(this.nodes[j])/(double)this.getNumEdges();
           if (volado.nextDouble() <= probabilidad){
             if (!existeConexion(this.nodes[i], this.nodes[j])){
-              conectarNodos(this.nodes[i], this.nodes[j]);
+              conectarVertices(this.nodes[i], this.nodes[j]);
             }
           }
         }
@@ -109,22 +109,22 @@ public class Grafo
     }
   }
 
-  private int gradoNodo(Nodo n1){
+  private int gradoVertice(Vertice n1){
     return this.graph.get(n1).size();
   }
 
-  private void conectarNodos(Nodo n1, Nodo n2){
-     HashSet<Nodo> vertices1 = this.graph.get(n1);
-     HashSet<Nodo> vertices2 = this.graph.get(n2);
+  private void conectarVertices(Vertice n1, Vertice n2){
+     HashSet<Vertice> vertices1 = this.graph.get(n1);
+     HashSet<Vertice> vertices2 = this.graph.get(n2);
 
      vertices1.add(n2);
      vertices2.add(n1);  //en Grafos dirigidos hay que quitar esta
      this.numeroAristas +=1;
   }
 
-  private Boolean existeConexion(Nodo n1, Nodo n2){
-    HashSet<Nodo> vertices1 = this.graph.get(n1);
-    HashSet<Nodo> vertices2 = this.graph.get(n2);
+  private Boolean existeConexion(Vertice n1, Vertice n2){
+    HashSet<Vertice> vertices1 = this.graph.get(n1);
+    HashSet<Vertice> vertices2 = this.graph.get(n2);
      if (vertices1.contains(n2) || vertices2.contains(n1)){
        return true;
      }
@@ -133,13 +133,13 @@ public class Grafo
      }
   }
 
-  private double distanciaNodos(Nodo n1, Nodo n2){
+  private double distanciaVertices(Vertice n1, Vertice n2){
     return Math.sqrt(Math.pow((n1.getX() - n2.getX()), 2)
     + Math.pow((n1.getY() - n2.getY()), 2));
   }
 
   public int getNumNodes(){
-    return this.numeroNodos;
+    return this.numeroVertices;
   }
 
   public int getNumEdges(){
@@ -152,8 +152,8 @@ public class Grafo
       System.out.println(this.nodes[i].getName() + ";");
     }
     for (int i = 0; i < this.getNumNodes(); i++){
-      HashSet<Nodo> aristas = graph.get(this.nodes[i]);
-      for (Nodo n : aristas){
+      HashSet<Vertice> aristas = graph.get(this.nodes[i]);
+      for (Vertice n : aristas){
       System.out.println(this.nodes[i].getName() + " -- " + n.getName() + ";");
       }
      }
@@ -178,8 +178,8 @@ public class Grafo
         output.format("%s", this.nodes[i].getName() + ";\n");
       }
       for (int i = 0; i < this.getNumNodes(); i++){
-        HashSet<Nodo> aristas = graph.get(this.nodes[i]);
-        for (Nodo n : aristas){
+        HashSet<Vertice> aristas = graph.get(this.nodes[i]);
+        for (Vertice n : aristas){
         output.format("%s",this.nodes[i].getName() + " -- " + n.getName() + ";\n");
         }
        }
