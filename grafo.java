@@ -89,7 +89,29 @@ public class grafo
   }
 
   public void modeloBA(int d){
+    Random volado = new Random();
+    for(int i = 0; i < this.getNumNodes(); i++){
+      for(int j = 0; j <this.getNumNodes(); j++){
+        if ((i != j) && (i < d)){
+          if (!existeConexion(this.nodes[i], this.nodes[j])){
+            conectarNodos(this.nodes[i], this.nodes[j]);
+          }
+        }
+        else if ((i != j) && (i >= d)){
+          double probabilidad =
+          (double)gradoNodo(this.nodes[j])/(double)this.getNumEdges();
+          if (volado.nextDouble() <= probabilidad){
+            if (!existeConexion(this.nodes[i], this.nodes[j])){
+              conectarNodos(this.nodes[i], this.nodes[j]);
+            }
+          }
+        }
+      }
+    }
+  }
 
+  private int gradoNodo(Nodo n1){
+    return n1.getNumEdges();
   }
 
   private void conectarNodos(Nodo n1, Nodo n2){
@@ -98,6 +120,9 @@ public class grafo
 
      vertices1.add(n2);
      vertices2.add(n1);  //en grafos dirigidos hay que quitar esta
+     n1.addEdge();
+     n2.addEdge();
+     this.numeroAristas +=1;
 
      // System.out.println("Se hizo una conexion entre " + n1.getName() + " y " +
      //  n2.getName());
