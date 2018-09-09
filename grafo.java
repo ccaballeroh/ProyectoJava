@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.FormatterClosedException;
 import java.io.FileNotFoundException;
 
-public class grafo
+public class Grafo
 {
   private Nodo[] nodes;
   private HashMap<Nodo, HashSet<Nodo>> graph;
@@ -16,7 +16,7 @@ public class grafo
   private int numeroAristas;
   private static Formatter output;
 
-  public grafo(int numNodos)
+  public Grafo(int numNodos)
   {
     this.graph = new HashMap<Nodo, HashSet<Nodo>>();
     this.numeroNodos = numNodos;
@@ -28,7 +28,7 @@ public class grafo
     }
   }
 
-  public grafo(int numNodos, String modelo){
+  public Grafo(int numNodos, String modelo){
       this.graph = new HashMap<Nodo, HashSet<Nodo>>();
       this.numeroNodos = numNodos;
       this.nodes = new Nodo[numNodos];
@@ -118,7 +118,7 @@ public class grafo
      HashSet<Nodo> vertices2 = this.graph.get(n2);
 
      vertices1.add(n2);
-     vertices2.add(n1);  //en grafos dirigidos hay que quitar esta
+     vertices2.add(n1);  //en Grafos dirigidos hay que quitar esta
      this.numeroAristas +=1;
   }
 
