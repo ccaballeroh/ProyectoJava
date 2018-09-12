@@ -91,6 +91,7 @@ public class Grafo
     Random volado = new Random();
     for(int i = 0; i < this.getNumNodes(); i++){
       for(int j = 0; j < this.getNumNodes(); j++){
+        /*Falta que solo se agregen d vértices a cada nodo i*/
         if ((i != j) && (i < d)){
           if (!existeConexion(this.nodes[i], this.nodes[j])){
             conectarVertices(this.nodes[i], this.nodes[j]);
