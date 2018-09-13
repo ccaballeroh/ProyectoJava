@@ -106,10 +106,13 @@ public class Grafo
           }
         }
       }
-      if((i > d) && (gradoVertice(this.nodes[i]) < d)){
+      if((i >= d) && (gradoVertice(this.nodes[i]) < d)){
       //  System.out.println("Vertice " + i + " y " + d + " y " + gradoVertice(this.nodes[i]) );
       }
-      else{
+      else if ((i >= d) && (gradoVertice(this.nodes[i]) >= d)){
+        i++;
+      }
+      else if (i < d){
         i++;
       }
     }
