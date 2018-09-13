@@ -89,23 +89,28 @@ public class Grafo
 
   public void modeloBA(int d){
     Random volado = new Random();
-    for(int i = 0; i < this.getNumNodes(); i++){
-      for(int j = 0; j < this.getNumNodes(); j++){
-        /*Falta que solo se agregen d vértices a cada nodo i*/
-        if ((i != j) && (i < d)){
+    for(int i = 0; i < this.getNumNodes();){
+      for(int j = 0; j < i; j++){
+        if (i < d){
           if (!existeConexion(this.nodes[i], this.nodes[j])){
             conectarVertices(this.nodes[i], this.nodes[j]);
           }
         }
-        else if ((i != j) && (i >= d)){
+        else {
           double probabilidad =
           (double)gradoVertice(this.nodes[j])/(double)this.getNumEdges();
           if (volado.nextDouble() <= probabilidad){
-            if (!existeConexion(this.nodes[i], this.nodes[j])){
+            if ((!existeConexion(this.nodes[i], this.nodes[j])) && (gradoVertice(this.nodes[i]) < d)){
               conectarVertices(this.nodes[i], this.nodes[j]);
             }
           }
         }
+      }
+      if((i > d) && (gradoVertice(this.nodes[i]) < d)){
+      //  System.out.println("Vertice " + i + " y " + d + " y " + gradoVertice(this.nodes[i]) );
+      }
+      else{
+        i++;
       }
     }
   }
