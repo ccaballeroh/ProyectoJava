@@ -9,6 +9,7 @@
 
 Es necesario compilar primero la clase `Vertice`. Después, la clase `Grafo`.
 >> javac -d <DIRECTORIO DONDE GUARDAR EL PAQUETE> Vertice.java
+  
 >> javac -d <DIRECTORIO DONDE GUARDAR EL PAQUETE> Grafo.java
 
 
