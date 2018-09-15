@@ -8,9 +8,9 @@
 > * **Variante del modelo G(n,d) Barabási-Albert**
 
 Es necesario compilar primero la clase `Vertice`. Después, la clase `Grafo`.
->> javac -d <DIRECTORIO DONDE GUARDAR EL PAQUETE> Vertice.java
+> javac -d [DIRECTORIO DONDE GUARDAR EL PAQUETE] Vertice.java
   
->> javac -d <DIRECTORIO DONDE GUARDAR EL PAQUETE> Grafo.java
+> javac -d [DIRECTORIO DONDE GUARDAR EL PAQUETE] Grafo.java
 
 
 Ambas clases forman un **paquete** llamado `Grafos` que puede importarse a otro archivo de Java como en el archivo `Prueba.java`
