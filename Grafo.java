@@ -118,6 +118,23 @@ public class Grafo
     return this.graph.get(n);
   }
 
+  /*Método toString para tener representación en String del Grafo*/
+  public String toString() {
+    String salida;
+    salida ="graph {\n";
+    for (int i = 0; i < this.getNumNodes(); i++) {
+      salida += this.getNode(i).getName() + ";\n";
+    }
+    for (int i = 0; i < this.getNumNodes(); i++) {
+      HashSet<Vertice> aristas = this.getEdges(i);
+      for (Vertice n : aristas) {
+      salida += this.getNode(i).getName() + " -- " + n.getName() + ";\n";
+      }
+     }
+    salida += "}\n";
+    return salida;
+  }
+
   /*Métodos de instancia que implementan los modelos*/
 
   /*Modelo Erdös-Rényi.
@@ -240,18 +257,7 @@ El método toma como argumento, el nombre del archivo.*/
       System.exit(1);
     }
     try{
-      output.format("%s","graph {\n");
-      for (int i = 0; i < this.getNumNodes(); i++) {
-        output.format("%s", this.getNode(i).getName() + ";\n");
-      }
-      for (int i = 0; i < this.getNumNodes(); i++) {
-        HashSet<Vertice> aristas = this.getEdges(i);
-        for (Vertice n : aristas) {
-        output.format("%s",this.getNode(i).getName() + " -- "
-                      + n.getName() + ";\n");
-        }
-       }
-      output.format("}\n");
+      output.format("%s",this);
     }
     catch (FormatterClosedException formatterClosedException) {
       System.err.println("Error al escribir al archivo");
