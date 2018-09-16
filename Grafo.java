@@ -63,7 +63,7 @@ public class Grafo
 
   /*Métodos auxiliares*/
   /*Regresa el grado (número de aristas) de un vértice i*/
-  private int gradoVertice(int i) {
+  public int gradoVertice(int i) {
     Vertice n1 = this.getNode(i);
     return this.graph.get(n1).size();
   }
