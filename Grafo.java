@@ -1,7 +1,7 @@
 /*Clase que implementa modelos de grafos.
 
 La clase forma parte del paquete 'Grafos'. Implementa cuatro modelos para
-genera grafos aleatorios:
+generar grafos aleatorios:
 1. Erdös-Rényi
 2. Gilbert
 3. Geográfico simple
@@ -62,16 +62,20 @@ public class Grafo
     }
 
   /*Métodos auxiliares*/
-  /*Regresa el grado (número de aristas) de un vértice*/
-  private int gradoVertice(Vertice n1) {
+  /*Regresa el grado (número de aristas) de un vértice i*/
+  private int gradoVertice(int i) {
+    Vertice n1 = this.getNode(i);
     return this.graph.get(n1).size();
   }
 
   /*Conecta dos vértices*/
-  private void conectarVertices(Vertice n1, Vertice n2) {
-    /*Se recuperan las aristas de cada vértice*/
-     HashSet<Vertice> aristas1 = this.graph.get(n1);
-     HashSet<Vertice> aristas2 = this.graph.get(n2);
+  public void conectarVertices(int i, int j) {
+    /*Se recuperan los vértices de los índices i y j*/
+     Vertice n1 = this.getNode(i);
+     Vertice n2 = this.getNode(j);
+     /*Se recuperan las aristas de cada vértice*/
+     HashSet<Vertice> aristas1 = this.getEdges(i);
+     HashSet<Vertice> aristas2 = this.getEdges(j);
 
      /*Se agregan los vértices al conjunto del otro*/
      aristas1.add(n2);
@@ -80,10 +84,13 @@ public class Grafo
   }
 
   /*Nos regresa 'true' si ya existe la arista*/
-  private Boolean existeConexion(Vertice n1, Vertice n2) {
+  private Boolean existeConexion(int i, int j) {
+    /*Se recuperan los vértices de los índices i y j*/
+     Vertice n1 = this.getNode(i);
+     Vertice n2 = this.getNode(j);
     /*Se recuperan las aristas de cada vértice*/
-    HashSet<Vertice> aristas1 = this.graph.get(n1);
-    HashSet<Vertice> aristas2 = this.graph.get(n2);
+    HashSet<Vertice> aristas1 = this.getEdges(i);
+    HashSet<Vertice> aristas2 = this.getEdges(j);
     /*Se revisa que un nodo esté en el conjunto de aristas del otro*/
      if (aristas1.contains(n2) || aristas2.contains(n1)) {
        return true;
@@ -104,6 +111,13 @@ public class Grafo
 
   public int getNumEdges() {return numeroAristas;}
 
+  public Vertice getNode(int i) {return this.nodes[i];}
+
+  public HashSet<Vertice> getEdges(int i) {
+    Vertice n = this.getNode(i);
+    return this.graph.get(n);
+  }
+
   /*Métodos de instancia que implementan los modelos*/
 
   /*Modelo Erdös-Rényi.
@@ -122,8 +136,8 @@ public class Grafo
       int num1 = randomNum1.nextInt(this.getNumNodes());
       int num2 = randomNum2.nextInt(this.getNumNodes());
       if (num1 != num2) {
-        if (!existeConexion(this.nodes[num1], this.nodes[num2])) {
-          conectarVertices(this.nodes[num1], this.nodes[num2]);
+        if (!existeConexion(num1, num2)) {
+          conectarVertices(num1, num2);
         }
       }
     }
@@ -142,8 +156,8 @@ public class Grafo
     for(int i = 0; i < this.getNumNodes(); i++) {
       for(int j = 0; j <this.getNumNodes(); j++) {
         if ((i != j) && (randomNum.nextDouble() <= probabilidad)) {
-          if (!existeConexion(this.nodes[i], this.nodes[j])) {
-            conectarVertices(this.nodes[i], this.nodes[j]);
+          if (!existeConexion(i, j)) {
+            conectarVertices(i, j);
           }
         }
       }
@@ -161,9 +175,9 @@ distancia r o menor*/
     conexión.*/
     for(int i = 0; i < this.getNumNodes(); i++) {
       for(int j = i + 1; j < this.getNumNodes(); j++) {
-        double distancia = distanciaVertices(this.nodes[i], this.nodes[j]);
+        double distancia = distanciaVertices(this.getNode(i), this.getNode(j));
         if (distancia <= r) {
-            conectarVertices(this.nodes[i], this.nodes[j]);
+            conectarVertices(i, j);
         }
       }
     }
@@ -182,8 +196,8 @@ distancia r o menor*/
   con i distinto de j y recorriendo todos los vértices.*/
     for(int i = 0; i < d; i++){
       for(int j = 0; j < i; j++) {
-        if (!existeConexion(this.nodes[i], this.nodes[j])) {
-          conectarVertices(this.nodes[i], this.nodes[j]);
+        if (!existeConexion(i, j)) {
+          conectarVertices(i, j);
         }
       }
     }
@@ -199,15 +213,14 @@ distancia r o menor*/
     for(int i = d; i < this.getNumNodes();) {
       for(int j = 0; j < i; j++) {
         double probabilidad =
-        (double)gradoVertice(this.nodes[j])/(double)this.getNumEdges();
+        (double)gradoVertice(j)/(double)this.getNumEdges();
         if (volado.nextDouble() <= probabilidad) {
-          if ((!existeConexion(this.nodes[i], this.nodes[j]))
-                && (gradoVertice(this.nodes[i]) < d)){
-            conectarVertices(this.nodes[i], this.nodes[j]);
+          if (!existeConexion(i, j) && (gradoVertice(i) < d)) {
+            conectarVertices(i, j);
           }
         }
       }
-      if (gradoVertice(this.nodes[i]) >= d) i++;
+      if (gradoVertice(i) >= d) i++;
     }
   }
 
@@ -229,12 +242,12 @@ El método toma como argumento, el nombre del archivo.*/
     try{
       output.format("%s","graph {\n");
       for (int i = 0; i < this.getNumNodes(); i++) {
-        output.format("%s", this.nodes[i].getName() + ";\n");
+        output.format("%s", this.getNode(i).getName() + ";\n");
       }
       for (int i = 0; i < this.getNumNodes(); i++) {
-        HashSet<Vertice> aristas = graph.get(this.nodes[i]);
+        HashSet<Vertice> aristas = this.getEdges(i);
         for (Vertice n : aristas) {
-        output.format("%s",this.nodes[i].getName() + " -- "
+        output.format("%s",this.getNode(i).getName() + " -- "
                       + n.getName() + ";\n");
         }
        }
