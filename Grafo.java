@@ -266,22 +266,27 @@ El método toma como argumento, el nombre del archivo.*/
     output.close();
   }
 
+  /* Método para generar el árbol BFS del Grafo*/
+  /* Regresa otro grafo. Solo toma como entrada el número
+  de un nodo*/
   public Grafo BFS(int s) {
-    Grafo arbol = new Grafo(this.getNumNodes());
-    Boolean[] discovered = new Boolean[this.getNumNodes()];
+    Grafo arbol = new Grafo(this.getNumNodes());  // grafo de salida
+    Boolean[] discovered = new Boolean[this.getNumNodes()];  // arreglo aux
     PriorityQueue<Integer> L = new PriorityQueue<Integer>();
-    discovered[s] = true;
+    discovered[s] = true;  // se pone como descubierto el vértice raíz
     for (int i = 0; i < this.getNumNodes(); i++) {
-      if (i != s) {
+      if (i != s) {   // el resto como no descubiertos
         discovered[i] = false;
       }
     }
-    L.add(s);
-    while (L.peek() != null) {
-      int u = L.poll();
-      HashSet<Vertice> aristas = this.getEdges(u);
+    L.add(s);  // Se agrega a la cola de prioridad el nodo raíz
+    while (L.peek() != null) {  // se revisa que no esté vacía la cola
+      int u = L.poll();  // se extrae un elemento de la cola
+      HashSet<Vertice> aristas = this.getEdges(u);  // aristas del nodo u
       for (Vertice n : aristas) {
         if(!discovered[n.getIndex()]) {
+          // si no está descubierto conectarlo, marcarlo como descubierto
+          // y agregarlo a la cola.
           arbol.conectarVertices(u, n.getIndex());
           discovered[n.getIndex()] = true;
           L.add(n.getIndex());
