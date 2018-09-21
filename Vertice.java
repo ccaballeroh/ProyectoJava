@@ -6,6 +6,7 @@ public class Vertice {
   /* Variables de instancia*/
   private String name;
   private Integer numAristas;
+  private Integer index;
   /*Estas variables solo son usadas en el modelo geográfico simple
   por lo que solo se usan cuando se llama al constructor correspondiente*/
   private double x;
@@ -21,6 +22,7 @@ public class Vertice {
   de instancia 'name' la cadena formada por la letra 'n' concatenada con
   la representación en cadena del número entero que tomó como argumento*/
   public Vertice(int name) {
+    this.index = name;
     this.name = "n" + String.valueOf(name);
     this.numAristas = 0;
   }
@@ -40,6 +42,8 @@ public class Vertice {
   public String getName() {return name;}
 
   public Integer getNumEdges() {return numAristas;}
+
+  public Integer getIndex() {return index;}
 
   /*Variables de instancia usadas en el modelo geográfico simple*/
   public double getX() {return x;}

@@ -265,4 +265,29 @@ El método toma como argumento, el nombre del archivo.*/
     if (output != null)
     output.close();
   }
+
+  public Grafo BFS(int s) {
+    Grafo arbol = new Grafo(this.getNumNodes());
+    Boolean[] discovered = new Boolean[this.getNumNodes()];
+    PriorityQueue<Integer> L = new PriorityQueue<Integer>();
+    discovered[s] = true;
+    for (int i = 0; i < this.getNumNodes(); i++) {
+      if (i != s) {
+        discovered[i] = false;
+      }
+    }
+    L.add(s);
+    while (L.peek() != null) {
+      int u = L.poll();
+      HashSet<Vertice> aristas = this.getEdges(u);
+      for (Vertice n : aristas) {
+        if(!discovered[n.getIndex()]) {
+          arbol.conectarVertices(u, n.getIndex());
+          discovered[n.getIndex()] = true;
+          L.add(n.getIndex());
+        }
+      }
+    }
+return arbol;
+  }
 }
