@@ -319,7 +319,7 @@ private void recursivoDFS(int u, Boolean[] discovered, Grafo arbol) {
         // y mandar a llamar recursivamente el método con este nuevo vértice
         arbol.conectarVertices(u, n.getIndex());
         recursivo(n.getIndex(), discovered, arbol);
-      }
+        }
       }
     }
-  }
+}
