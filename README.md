@@ -20,3 +20,7 @@ import Grafos.grafo;
 ```
 
 Las imágenes PNG fueron generadas con [gephi](https://gephi.org/).
+
+## Segunda entrega del proyecto
+
+> Implementar los algoritmos BFS y DFS (recursivo e iterativo) de tal forma que dado un nodo fuente, se calcule el árbol inducido por los algoritmos mencionados.
