@@ -266,7 +266,7 @@ El método toma como argumento, el nombre del archivo.*/
     output.close();
   }
 
-  /* Método para generar el árbol BFS del Grafo*/
+  /* Método para generar el árbol BFS del Grafo */
   /* Regresa otro grafo. Solo toma como entrada el número
   de un nodo*/
   public Grafo BFS(int s) {
@@ -285,7 +285,7 @@ El método toma como argumento, el nombre del archivo.*/
       HashSet<Vertice> aristas = this.getEdges(u);  // aristas del nodo u
       for (Vertice n : aristas) {
         if(!discovered[n.getIndex()]) {
-          // si no está descubierto conectarlo, marcarlo como descubierto
+          // si no está descubierto, conectarlo, marcarlo como descubierto
           // y agregarlo a la cola.
           arbol.conectarVertices(u, n.getIndex());
           discovered[n.getIndex()] = true;
@@ -296,28 +296,30 @@ El método toma como argumento, el nombre del archivo.*/
 return arbol;
   }
 
+  /* Método para generar el árbol DFS del Grafo de forma recursiva  */
+  /* Regresa otro grafo. Solo toma como entrada el número de un nodo*/
 public Grafo DFS_R(int s) {
   Grafo arbol = new Grafo(this.getNumNodes());  // grafo de salida
   Boolean[] discovered = new Boolean[this.getNumNodes()];  // arreglo aux
-  discovered[s] = true;  // se pone como descubierto el vértice raíz
   for (int i = 0; i < this.getNumNodes(); i++) {
-    if (i != s) {   // el resto como no descubiertos
-      discovered[i] = false;
+    discovered[i] = false;  // se marcan todos como no decubiertos
+  }
+  // se manda a llamar a la función recursiva de DFS
+  recursivoDFS(s, discovered, arbol);
+  return arbol;
+}
+
+private void recursivoDFS(int u, Boolean[] discovered, Grafo arbol) {
+  discovered[u] = true;  // vértice con el que se llamó se marca
+  // aristas del vértice u, con el que se llamó el método
+  HashSet<Vertice> aristas = this.getEdges(u);
+  for (Vertice n : aristas) {
+      if (!discovered[n.getIndex()]) {
+        // si no está descubierto, conectar el vértice
+        // y mandar a llamar recursivamente el método con este nuevo vértice
+        arbol.conectarVertices(u, n.getIndex());
+        recursivo(n.getIndex(), discovered, arbol);
+      }
+      }
     }
   }
-
-
-  recursivo(int s);
-
-  for (int i = 0; i < this.getNumNodes(); i++) {
-    if (!discovered[])
-  }
-
-  }
-
-  public void recursivo(int u) {
-    HashSet<Vertice> aristas = this.getEdges(u);
-
-  }
-
-}
