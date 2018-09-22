@@ -295,4 +295,29 @@ El método toma como argumento, el nombre del archivo.*/
     }
 return arbol;
   }
+
+public Grafo DFS_R(int s) {
+  Grafo arbol = new Grafo(this.getNumNodes());  // grafo de salida
+  Boolean[] discovered = new Boolean[this.getNumNodes()];  // arreglo aux
+  discovered[s] = true;  // se pone como descubierto el vértice raíz
+  for (int i = 0; i < this.getNumNodes(); i++) {
+    if (i != s) {   // el resto como no descubiertos
+      discovered[i] = false;
+    }
+  }
+
+
+  recursivo(int s);
+
+  for (int i = 0; i < this.getNumNodes(); i++) {
+    if (!discovered[])
+  }
+
+  }
+
+  public void recursivo(int u) {
+    HashSet<Vertice> aristas = this.getEdges(u);
+
+  }
+
 }
