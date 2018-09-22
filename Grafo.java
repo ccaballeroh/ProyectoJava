@@ -322,4 +322,33 @@ private void recursivoDFS(int u, Boolean[] discovered, Grafo arbol) {
         }
       }
     }
+
+  /* Método para generar el árbol DFS del Grafo de forma iterativa  */
+  /* Regresa otro grafo. Solo toma como entrada el número de un nodo*/
+public Grafo DFS_I(int s) {
+  Grafo arbol = new Grafo(this.getNumNodes());  // grafo de salida
+  Boolean[] explored = new Boolean[this.getNumNodes()];  // arreglo aux
+  Stack<Integer> S = new Stack<Integer>(); //pila para los vértices
+  Integer[] parent = new Integer[this.getNumNodes()]; //arreglo de padres
+  for (int i = 0; i < this.getNumNodes(); i++) {
+      explored[i] = false;  //se ponen todos los vértices como no explorados
+    }
+  S.push(s);  //se manda a la pila al nodo raíz
+  while(!S.isEmpty()) {
+    // mientras la pila no esté vacía
+    int u = S.pop();  // se extraen elementos de la pila
+    if(!explored[u]) {
+      explored[u] = true;  // si aún no estaban explorados se marcan como tal
+      if(u != s) {
+        arbol.conectarVertices(u, parent[u]); //se conecta con su padre
+      }
+      HashSet<Vertice> aristas = this.getEdges(u);  // aristas del nodo u
+      for (Vertice n : aristas) {
+        S.push(n.getIndex());  // a la pila los vértices conectados con u
+        parent[n.getIndex()] = u;  // se les marca como padre a u
+        }
+      }
+    }
+  return arbol;
+  }
 }
