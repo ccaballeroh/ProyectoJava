@@ -32,6 +32,7 @@ public class Vertice {
   del vértice. El modelo geofráfico simple toma coordenadas en un cuadrado
   unitario*/
   public Vertice(int name, double x, double y) {
+    this.index = name;
     this.name = "n" + String.valueOf(name);
     this.x = x;
     this.y = y;
