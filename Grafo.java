@@ -351,4 +351,21 @@ public Grafo DFS_I(int s) {
     }
   return arbol;
   }
+
+  public void EdgeValues(double min, double max) {
+    Random rand = new Random();
+    double peso;
+    HashMap<Integer, HashSet<Arista>>  incidencia = new HashMap<>();
+    for(int i = 0; i < this.getNumNodes(); i++) {
+      HashSet<Vertice> aristasNodo = this.getEdges(i);
+      HashSet<Arista> aristasPeso = new HashSet<>();
+      for (Vertice n : aristasNodo) {
+        int j = n.getIndex();
+        peso = rand.nextFloat()*(max - min) + min;
+        aristasPeso.add(new Arista(i, j, peso));
+      }
+      incidencia.put(i, aristasPeso);
+    }
+  }
+
 }
