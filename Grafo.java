@@ -24,9 +24,12 @@ public class Grafo
   /*El grafo en sí es un mapa Hash. Toma como llave el vértice, que es mapeado
   a un conjunto Hash de vértices con los cuales hay conexión.*/
   private HashMap<Vertice, HashSet<Vertice>> graph;
+  private HashMap<Vertice, HashSet<Arista>> incidencia;
   private final int numeroVertices; //número de vértices del grafo
   private int numeroAristas;  //número de aristas únicas del grafo
   private static Formatter output; //objeto para escribir a disco
+
+  private Boolean weighted;
 
 
   /* Constructores*/
@@ -41,6 +44,7 @@ public class Grafo
       this.nodes[i] = n;
       this.graph.put(n, new HashSet<Vertice>());
     }
+    this.weighted = false;
   }
 
   /*Constructor usado para el modelo geofráfico simple.
@@ -59,6 +63,7 @@ public class Grafo
           this.graph.put(n, new HashSet<Vertice>());
         }
       }
+      this.weighted = false;
     }
 
   /*Métodos auxiliares*/
@@ -113,25 +118,47 @@ public class Grafo
 
   public Vertice getNode(int i) {return this.nodes[i];}
 
+  public Boolean getWeightedFlag() {return this.weighted;}
+
   public HashSet<Vertice> getEdges(int i) {
     Vertice n = this.getNode(i);
     return this.graph.get(n);
   }
 
+  public HashSet<Arista> getWeightedEdges(int i) {
+    Vertice n = this.getNode(i);
+    return this.incidencia.get(n);
+  }
+
   /*Método toString para tener representación en String del Grafo*/
   public String toString() {
     String salida;
-    salida ="graph {\n";
-    for (int i = 0; i < this.getNumNodes(); i++) {
-      salida += this.getNode(i).getName() + ";\n";
-    }
-    for (int i = 0; i < this.getNumNodes(); i++) {
-      HashSet<Vertice> aristas = this.getEdges(i);
-      for (Vertice n : aristas) {
-      salida += this.getNode(i).getName() + " -- " + n.getName() + ";\n";
+    if (this.getWeightedFlag()) {
+      salida ="graph {\n";
+      for (int i = 0; i < this.getNumNodes(); i++) {
+        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + "\"];\n";
       }
-     }
-    salida += "}\n";
+      for (int i = 0; i < this.getNumNodes(); i++) {
+        HashSet<Arista> aristas = this.getWeightedEdges(i);
+        for (Arista e : aristas) {
+        salida += this.getNode(i).getName() + " -- " + e.getNode2() + " [weight=" + e.getWeight()+"" + "];\n";
+        }
+       }
+      salida += "}\n";
+    }
+    else {
+      salida ="graph {\n";
+      for (int i = 0; i < this.getNumNodes(); i++) {
+        salida += this.getNode(i).getName() + ";\n";
+      }
+      for (int i = 0; i < this.getNumNodes(); i++) {
+        HashSet<Vertice> aristas = this.getEdges(i);
+        for (Vertice n : aristas) {
+        salida += this.getNode(i).getName() + " -- " + n.getName() + ";\n";
+        }
+       }
+      salida += "}\n";
+    }
     return salida;
   }
 
@@ -355,7 +382,8 @@ public Grafo DFS_I(int s) {
   public void EdgeValues(double min, double max) {
     Random rand = new Random();
     double peso;
-    HashMap<Integer, HashSet<Arista>>  incidencia = new HashMap<>();
+    this.incidencia = new HashMap<>();
+    //HashMap<Integer, HashSet<Arista>>  incidencia = new HashMap<>();
     for(int i = 0; i < this.getNumNodes(); i++) {
       HashSet<Vertice> aristasNodo = this.getEdges(i);
       HashSet<Arista> aristasPeso = new HashSet<>();
@@ -364,8 +392,9 @@ public Grafo DFS_I(int s) {
         peso = rand.nextFloat()*(max - min) + min;
         aristasPeso.add(new Arista(i, j, peso));
       }
-      incidencia.put(i, aristasPeso);
+      this.incidencia.put(this.getNode(i), aristasPeso);
     }
+    this.weighted = true;
   }
 
 }

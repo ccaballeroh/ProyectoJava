@@ -17,9 +17,9 @@ public class Arista {
 
   /*getters de variables de instancia */
 
-  public Integer getNode1() {return n1;}
+  public String getNode1() {return "n" + n1.toString();}
 
-  public Integer getNode2() {return n2;}
+  public String getNode2() {return "n" + n2.toString();}
 
   public double getWeight() {return peso;}
 
