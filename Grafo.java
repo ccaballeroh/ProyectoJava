@@ -9,7 +9,19 @@ generar grafos aleatorios:
 
 La clase utiliza la clase 'Vertice' del mismo paquete, que incluye
 constructores para el modelo geográfico simple, que necesita un par de
-coordenadas, y otro para los otros tres modelos.*/
+coordenadas, y otro para los otros tres modelos.
+
+También utiliza la clase 'Arista' necesaria para poder generar Grafos
+con pesos en las aristas.
+
+Tiene implementados los algoritmos de DFS (iterativo y recursivo) y BFS.
+Los métodos regresan un grafo con el árbol de expansión mínima.
+
+Tiene implementado el algoritmo de Dijkstra para encontrar el camino
+más corto en un grafo con pesos postivos en las aristas desde un nodo
+fuente hasta el resto de los nodos. El método regresa un grafo que es
+el árbol con el camino más corto.
+}*/
 package Grafos;
 import Grafos.Vertice;
 import Grafos.Arista;
@@ -25,6 +37,8 @@ public class Grafo {
   /*El grafo en sí es un mapa Hash. Toma como llave el vértice, que es mapeado
   a un conjunto Hash de vértices con los cuales hay conexión.*/
   private HashMap<Vertice, HashSet<Vertice>> graph;
+  /*Para los algoritmos de Dijkstra, Kruskal y Prim, se necesitan
+  aristas con pesos.*/
   private HashMap<Vertice, HashSet<Arista>> incidencia; //mapa para Dijkstra
   private final int numeroVertices; //número de vértices del grafo
   private int numeroAristas;  //número de aristas únicas del grafo
@@ -113,7 +127,7 @@ public class Grafo {
     + Math.pow((n1.getY() - n2.getY()), 2));
   }
 
-  //////////getters de las variables de instancia//////////
+  //////////getters/setters de las variables de instancia//////////
   public int getNumNodes() {return numeroVertices;}
 
   public int getNumEdges() {return numeroAristas;}
@@ -153,20 +167,24 @@ public class Grafo {
   //////////Método toString para representación en String del Grafo//////////
   public String toString() {
     String salida;
-    if (this.getWeightedFlag()) {
-      salida ="graph {\n";
+    if (this.getWeightedFlag()) { //esta parte es para grafos pesados y con
+      salida ="graph {\n";        // nodos etiquetados
       for (int i = 0; i < this.getNumNodes(); i++) {
-        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + " ("+ this.getNode(i).getDistance()+ ")\"];\n";
+        salida += this.getNode(i).getName() + " [label=\""
+        + this.getNode(i).getName() + " ("+ this.getNode(i).getDistance()
+        + ")\"];\n";
       }
       for (int i = 0; i < this.getNumNodes(); i++) {
         HashSet<Arista> aristas = this.getWeightedEdges(i);
         for (Arista e : aristas) {
-        salida += e.getNode1() + " -- " + e.getNode2() + " [weight=" + e.getWeight()+"" + " label="+e.getWeight()+""+ "];\n";
+        salida += e.getNode1() + " -- " + e.getNode2()
+        + " [weight=" + e.getWeight()+"" + " label="+e.getWeight()+""
+        + "];\n";
         }
        }
       salida += "}\n";
     }
-    else {
+    else { //esta es para grafos sin pesos ni etiquetas
       salida ="graph {\n";
       for (int i = 0; i < this.getNumNodes(); i++) {
         salida += this.getNode(i).getName() + ";\n";
@@ -287,7 +305,7 @@ distancia r o menor*/
     }
   }
 
-  /*Método para escribir a disco en un formato GraphVis.
+  /*Método de instancia para escribir a disco en un formato GraphVis.
 
   El método toma como argumento, el nombre del archivo.*/
   public void escribirArchivo(String nombre) {
@@ -313,6 +331,7 @@ distancia r o menor*/
   }
 
   ////// SEGUNDA ENTREGA //////////
+
   /* Método para generar el árbol BFS del Grafo */
   /* Regresa otro grafo. Solo toma como entrada el número
   de un nodo*/
@@ -404,12 +423,13 @@ distancia r o menor*/
 
   ///////// Método para asignar pesos a las aristas entre dos valores /////////
   public Grafo EdgeValues(double min, double max) {
-    Grafo grafoPesado = new Grafo(this.getNumNodes());
+    Grafo grafoPesado = new Grafo(this.getNumNodes()); //grafo de salida
     Random rand = new Random();
     double peso;
-    for (int i = 0; i < this.getNumNodes(); i++) {
-      for (int j = i; j < this.getNumNodes(); j++) {
-        if(this.existeConexion(i, j)) {
+    for (int i = 0; i < this.getNumNodes(); i++) {  //se recorre el grafo
+      for (int j = i; j < this.getNumNodes(); j++) { //original
+        if(this.existeConexion(i, j)) { //donde existe conexión entre nodos
+          //se crea una arista con peso aleatorio en el grafo de salida
           peso = rand.nextFloat()*(max - min) + min;
           grafoPesado.setAristaPeso(i, j, peso);
         }
@@ -419,42 +439,45 @@ distancia r o menor*/
   }
 
   public Grafo Dijsktra(int s) {
-    Grafo arbol = new Grafo(this.getNumNodes());
-    double inf = Double.POSITIVE_INFINITY;
+    Grafo arbol = new Grafo(this.getNumNodes()); //grafo de salida
+    double inf = Double.POSITIVE_INFINITY;  // máxima distancia
+    //arreglo donde se guarda el nodo padre de cada nodo
     Integer[] padres = new Integer[arbol.getNumNodes()];
-    //double[] dist = new double[arbol.getNumNodes()];
-
+    // Las distancias de todos los nodos a infinito y todos los padres a null
     for (int i = 0; i < arbol.getNumNodes(); i++) {
       this.getNode(i).setDistance(inf);
       padres[i] = null;
     }
+    // la distancia del nodo fuente a 0.0 y a sí mismo como padre
     this.getNode(s).setDistance(0.0);
     padres[s] = s;
-
+    // Cola de prioridad de los nodos. La llave es la distancia
     PriorityQueue<Vertice> distPQ = new PriorityQueue<>(vertexDistanceComp);
     for (int i = 0; i < this.getNumNodes(); i++) {
         distPQ.add(this.getNode(i));
     }
-
+    //Se explora el grafo
     while (distPQ.peek() != null) {  // se revisa que no esté vacía la cola
-      Vertice u = distPQ.poll();  // se extrae un elemento de la cola
-      HashSet<Arista> aristas = this.getWeightedEdges(u.getIndex());  // aristas del nodo u
+      Vertice u = distPQ.poll();  // elemento de la cola de prioridad
+      //aristas del nodo u
+      HashSet<Arista> aristas = this.getWeightedEdges(u.getIndex());
       for (Arista e : aristas) {
+        // actualizar padre y distancia si es menor a la que tenía
         if(this.getNode(e.getIntN2()).getDistance() > this.getNode(u.getIndex()).getDistance() + e.getWeight()) {
           this.getNode(e.getIntN2()).setDistance(this.getNode(u.getIndex()).getDistance() + e.getWeight());
           padres[e.getIntN2()] = u.getIndex();
         }
       }
     }
-
+    //se conecta el árbol de salida con la lista de padres y se asigna la
+    //distancia al nodo fuente a cada nodo
     for (int i = 0; i < arbol.getNumNodes(); i++) {
-      //System.out.println(padres[i]);
       arbol.setAristaPeso(i, padres[i], 1);
       arbol.getNode(i).setDistance(this.getNode(i).getDistance());
     }
     return arbol;
   }
-
+  //comparador necesario para la cola de prioridad de objetos 'Vertice'
   Comparator<Vertice> vertexDistanceComp = new Comparator<Vertice>() {
               @Override
               public int compare(Vertice n1, Vertice n2) {
