@@ -128,6 +128,11 @@ public class Grafo {
     return this.incidencia.get(n);
   }
 
+  public void setWeighted() {this.weighted = true;}
+
+  public void setIncidencia(int i, HashSet<Arista> aristasPeso) {
+    this.incidencia.put(this.getNode(i), aristasPeso);}
+
   //////////Método toString para representación en String del Grafo//////////
   public String toString() {
     String salida;
@@ -381,10 +386,18 @@ distancia r o menor*/
   ////////// TERCERA ENTREGA //////////
 
   ///////// Método para asignar pesos a las aristas entre dos valores /////////
-  public void EdgeValues(double min, double max) {
+  public Grafo EdgeValues(double min, double max) {
+    Grafo grafoPesado = new Grafo(this.getNumNodes());
+    for (int i = 0; i < this.getNumNodes(); i++) {
+      for (int j = i; j < this.getNumNodes(); j++) {
+        if(this.existeConexion(i, j)) {
+          grafoPesado.conectarVertices(i, j);
+        }
+      }
+    }
     Random rand = new Random();
     double peso;
-    this.incidencia = new HashMap<>();
+    grafoPesado.incidencia = new HashMap<>();
     for(int i = 0; i < this.getNumNodes(); i++) {
       HashSet<Vertice> nodosConectados = this.getEdges(i);
       HashSet<Arista> aristasPeso = new HashSet<>();
@@ -393,9 +406,9 @@ distancia r o menor*/
         peso = rand.nextFloat()*(max - min) + min;
         aristasPeso.add(new Arista(i, j, peso));
       }
-      this.incidencia.put(this.getNode(i), aristasPeso);
+      grafoPesado.setIncidencia(i, aristasPeso);
     }
-    this.weighted = true;
+    grafoPesado.setWeighted();
+    return grafoPesado;
   }
-
 }
