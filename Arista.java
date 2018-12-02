@@ -8,7 +8,7 @@ public class Arista {
   private Integer n2;
   private double peso;
 
-  /*Constructor que toma una cadena como nombre del vértice*/
+  /*Constructor que toma numéros de los nodos que conecta y su peso*/
   public Arista(int n1, int n2, double peso) {
     this.n1 = n1;
     this.n2 = n2;
