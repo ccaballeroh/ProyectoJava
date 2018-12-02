@@ -139,11 +139,12 @@ public class Grafo {
 
   public void setAristaPeso(int i, int j, double peso) {
     if (!this.existeConexion(i, j)) this.conectarVertices(i, j);
-    Arista aristaNueva = new Arista(i, j, peso);
+    Arista aristaNuevaij = new Arista(i, j, peso);
+    Arista aristaNuevaji = new Arista(j, i, peso);
     HashSet<Arista> aristasNodoi = this.getWeightedEdges(i);
     HashSet<Arista> aristasNodoj = this.getWeightedEdges(j);
-    aristasNodoi.add(aristaNueva);
-    aristasNodoj.add(aristaNueva);
+    aristasNodoi.add(aristaNuevaij);
+    aristasNodoj.add(aristaNuevaji);
     this.setIncidencia(i, aristasNodoi);
     this.setIncidencia(j, aristasNodoj);
     if (!this.getWeightedFlag()) this.setWeighted();
@@ -160,7 +161,7 @@ public class Grafo {
       for (int i = 0; i < this.getNumNodes(); i++) {
         HashSet<Arista> aristas = this.getWeightedEdges(i);
         for (Arista e : aristas) {
-        salida += e.getNode1() + " -- " + e.getNode2() + " [weight=" + e.getWeight()+"" + "];\n";
+        salida += e.getNode1() + " -- " + e.getNode2() + " [weight=" + e.getWeight()+"" + " label="+e.getWeight()+""+ "];\n";
         }
        }
       salida += "}\n";
@@ -419,15 +420,46 @@ distancia r o menor*/
 
   public Grafo Dijsktra(int s) {
     Grafo arbol = new Grafo(this.getNumNodes());
-    Integer[] padres = new Integer[]{0, 3, 0, 2, 3, 6, 4, 5};
-    double[] distancias = new double[]{0.0, 6.0, 2.0, 4.0, 5.0, 8.0, 6.0, 11.0};
+    double inf = Double.POSITIVE_INFINITY;
+    Integer[] padres = new Integer[arbol.getNumNodes()];
+    //double[] dist = new double[arbol.getNumNodes()];
 
     for (int i = 0; i < arbol.getNumNodes(); i++) {
+      this.getNode(i).setDistance(inf);
+      padres[i] = null;
+    }
+    this.getNode(s).setDistance(0.0);
+    padres[s] = s;
+
+    PriorityQueue<Vertice> distPQ = new PriorityQueue<>(vertexDistanceComp);
+    for (int i = 0; i < this.getNumNodes(); i++) {
+        distPQ.add(this.getNode(i));
+    }
+
+    while (distPQ.peek() != null) {  // se revisa que no esté vacía la cola
+      Vertice u = distPQ.poll();  // se extrae un elemento de la cola
+      HashSet<Arista> aristas = this.getWeightedEdges(u.getIndex());  // aristas del nodo u
+      for (Arista e : aristas) {
+        if(this.getNode(e.getIntN2()).getDistance() > this.getNode(u.getIndex()).getDistance() + e.getWeight()) {
+          this.getNode(e.getIntN2()).setDistance(this.getNode(u.getIndex()).getDistance() + e.getWeight());
+          padres[e.getIntN2()] = u.getIndex();
+        }
+      }
+    }
+
+    for (int i = 0; i < arbol.getNumNodes(); i++) {
+      //System.out.println(padres[i]);
       arbol.setAristaPeso(i, padres[i], 1);
-      arbol.getNode(i).setDistance(distancias[i]);
+      arbol.getNode(i).setDistance(this.getNode(i).getDistance());
     }
     return arbol;
   }
 
+  Comparator<Vertice> vertexDistanceComp = new Comparator<Vertice>() {
+              @Override
+              public int compare(Vertice n1, Vertice n2) {
+                  return Double.compare(n1.getDistance(), n2.getDistance());
+              }
+          };
 
 }

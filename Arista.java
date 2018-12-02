@@ -21,6 +21,10 @@ public class Arista {
 
   public String getNode2() {return "n" + n2.toString();}
 
+  public int getIntN1() {return n1;}
+
+  public int getIntN2() {return n2;}
+
   public double getWeight() {return peso;}
 
 }
