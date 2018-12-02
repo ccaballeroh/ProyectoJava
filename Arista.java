@@ -1,4 +1,4 @@
-/*Clase de un vértice de un grafo. Forma parte del paquete 'Grafos'*/
+/*Clase de un arista de un grafo. Forma parte del paquete 'Grafos'*/
 package Grafos;
 
 
@@ -8,14 +8,14 @@ public class Arista {
   private Integer n2;
   private double peso;
 
-  /*Constructor que toma numéros de los nodos que conecta y su peso*/
+  /*Constructor que toma núumeros de los nodos que conecta y su peso*/
   public Arista(int n1, int n2, double peso) {
     this.n1 = n1;
     this.n2 = n2;
     this.peso = peso;
   }
 
-  /*getters de variables de instancia */
+  /*getters y de variables de instancia */
 
   public String getNode1() {return "n" + n1.toString();}
 
