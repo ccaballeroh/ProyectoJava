@@ -1,7 +1,7 @@
 /*Archivo de prueba del uso del paquete Grafos*/
 import Grafos.Grafo;
 
-public class Prueba2 {
+public class Entrega2 {
   public static void main(String s[]){
 
     /*Se crean dos salidas por cada modelo de grafo aleatorio.
