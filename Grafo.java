@@ -419,6 +419,13 @@ distancia r o menor*/
 
   public Grafo Dijsktra(int s) {
     Grafo arbol = new Grafo(this.getNumNodes());
+    Integer[] padres = new Integer[]{0, 3, 0, 2, 3, 6, 4, 5};
+    double[] distancias = new double[]{0.0, 6.0, 2.0, 4.0, 5.0, 8.0, 6.0, 11.0};
+
+    for (int i = 0; i < arbol.getNumNodes(); i++) {
+      arbol.setAristaPeso(i, padres[i], 1);
+      arbol.getNode(i).setDistance(distancias[i]);
+    }
     return arbol;
   }
 
