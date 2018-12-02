@@ -134,7 +134,7 @@ public class Grafo {
     if (this.getWeightedFlag()) {
       salida ="graph {\n";
       for (int i = 0; i < this.getNumNodes(); i++) {
-        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + " "+ this.getNode(i).getDistance()+"" + "\"];\n";
+        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + " ("+ this.getNode(i).getDistance()+ ")\"];\n";
       }
       for (int i = 0; i < this.getNumNodes(); i++) {
         HashSet<Arista> aristas = this.getWeightedEdges(i);
