@@ -134,7 +134,7 @@ public class Grafo {
     if (this.getWeightedFlag()) {
       salida ="graph {\n";
       for (int i = 0; i < this.getNumNodes(); i++) {
-        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + "\"];\n";
+        salida += this.getNode(i).getName() + " [label=\"" + this.getNode(i).getName() + " "+ this.getNode(i).getDistance()+"" + "\"];\n";
       }
       for (int i = 0; i < this.getNumNodes(); i++) {
         HashSet<Arista> aristas = this.getWeightedEdges(i);
@@ -386,9 +386,9 @@ distancia r o menor*/
     double peso;
     this.incidencia = new HashMap<>();
     for(int i = 0; i < this.getNumNodes(); i++) {
-      HashSet<Vertice> aristasNodo = this.getEdges(i);
+      HashSet<Vertice> nodosConectados = this.getEdges(i);
       HashSet<Arista> aristasPeso = new HashSet<>();
-      for (Vertice n : aristasNodo) {
+      for (Vertice n : nodosConectados) {
         int j = n.getIndex();
         peso = rand.nextFloat()*(max - min) + min;
         aristasPeso.add(new Arista(i, j, peso));

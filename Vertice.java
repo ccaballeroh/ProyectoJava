@@ -12,6 +12,9 @@ public class Vertice {
   private double x;
   private double y;
 
+  /*Variable para usar en Dijkstra*/
+  private double distance;
+
   /*Constructor que toma una cadena como nombre del vértice*/
   public Vertice(String name) {
     this.name = name;
@@ -45,6 +48,10 @@ public class Vertice {
   public Integer getNumEdges() {return numAristas;}
 
   public Integer getIndex() {return index;}
+
+  public double getDistance() {return distance;}
+
+  public void setDistance(double d) {this.distance = d; }
 
   /*Variables de instancia usadas en el modelo geográfico simple*/
   public double getX() {return x;}
