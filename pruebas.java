@@ -19,9 +19,9 @@ public class pruebas {
     ejemplo.setAristaPeso(6, 7, 6.0);
     System.out.println(ejemplo);
 
-    Grafo dijkstra = ejemplo.Dijsktra(0);
+    Grafo dijkstra = ejemplo.Dijkstra(0);
 
 
-    //System.out.println(dijkstra);
+    System.out.println(dijkstra);
   }
 }
