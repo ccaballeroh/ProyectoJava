@@ -438,7 +438,7 @@ distancia r o menor*/
     return grafoPesado;
   }
 
-  public Grafo Dijsktra(int s) {
+  public Grafo Dijkstra(int s) {
     Grafo arbol = new Grafo(this.getNumNodes()); //grafo de salida
     double inf = Double.POSITIVE_INFINITY;  // máxima distancia
     //arreglo donde se guarda el nodo padre de cada nodo
